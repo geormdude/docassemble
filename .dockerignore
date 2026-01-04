@@ -65,3 +65,24 @@ en
 auto/
 .mypy_cache/*
 .vscode
+
+# Docker Compose and runtime files
+docker-compose.yml
+docker-compose.*.yml
+.dockerignore
+.gitignore
+
+# Runtime data directories
+docassemble-data/
+*.log
+
+# Config files that are runtime-specific (but keep Docker/config/ for build)
+config.yml
+Docker/my-env.list
+Docker/env.list
+
+# IDE and editor files
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

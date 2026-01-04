@@ -1,0 +1,47 @@
+services:
+  docassemble:
+    # Add image name so Docker Compose can reuse built images
+    image: docassemble:local
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # Use cache from previous builds
+      cache_from:
+        - docassemble:local
+    container_name: docassemble
+    restart: unless-stopped
+    
+    # Environment variables from your my-env.list file
+    env_file:
+      - ./Docker/my-env.list
+    
+    # Volume mounts for persistent data
+    volumes:
+      # Main data directory - CRITICAL for persistence
+      # Contains: files/, log/, backup/, config/config.yml
+      - docassemble_data:/usr/share/docassemble
+    
+    # Port mappings - expose the essential ports
+    ports:
+      - "80:80"      # HTTP
+      - "443:443"    # HTTPS
+      - "9001:9001"  # Supervisor web interface
+      # Additional ports available if needed:
+      # - "514:514"    # Syslog
+      # - "25:25"      # SMTP
+      # - "465:465"    # SMTPS
+      # - "8080:8080"  # Alternative HTTP
+      # - "8081:8081"  # Alternative HTTP
+      # - "8082:8082"  # Alternative HTTP
+    
+    # Additional environment variables
+    environment:
+      - CONTAINERROLE=all
+      # CONTAINERROLE can be: all, web, celery, redis, log, cron
+      # 'all' runs all services in a single container
+
+volumes:
+  # Named volume for persistent data storage
+  docassemble_data:
+    driver: local
+

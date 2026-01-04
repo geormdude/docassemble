@@ -1,6 +1,8 @@
 FROM jhpyle/docassemble-os
 USER root
 COPY . /tmp/docassemble/
+# Convert Windows line endings (CRLF) to Unix (LF) for shell scripts and config files
+RUN find /tmp/docassemble/Docker -type f \( -name "*.sh" -o -name "exim4-*" -o -name "*.conf" -o -name "*.config" -o -name "daunoconv" -o -name "extract_words.sh" \) -exec sed -i 's/\r$//' {} \;
 RUN DEBIAN_FRONTEND=noninteractive TERM=xterm LC_CTYPE=C.UTF-8 LANG=C.UTF-8 \
 bash -c \
 "apt-get -q -y update \
